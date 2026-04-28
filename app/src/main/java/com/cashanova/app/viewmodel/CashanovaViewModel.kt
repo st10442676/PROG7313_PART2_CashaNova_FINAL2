@@ -137,6 +137,12 @@ class CashanovaViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun logout() {
+        sessionManager.clearSession()
+        clearAuthFields()
+        message = ""
+    }
+
     fun clearAuthFields() {
         username = ""
         password = ""
