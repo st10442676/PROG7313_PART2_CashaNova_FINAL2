@@ -65,9 +65,13 @@ fun LoginScreen(
             text = "Login",
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Login action added in next commit.
+            viewModel.loginUser {
+                navController.navigate(Routes.DASHBOARD) {
+                    popUpTo(Routes.LOGIN) { inclusive = true }
+                }
+            }
         }
-
+        
         TextButton(
             onClick = {
                 viewModel.clearMessage()
