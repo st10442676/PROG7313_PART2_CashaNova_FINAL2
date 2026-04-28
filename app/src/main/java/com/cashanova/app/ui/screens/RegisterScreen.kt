@@ -114,8 +114,13 @@ fun RegisterScreen(
             text = "Register",
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Register action added in next commit.
+            viewModel.registerUser {
+                navController.navigate(Routes.LOGIN) {
+                    popUpTo(Routes.REGISTER) { inclusive = true }
+                }
+            }
         }
+
 
         TextButton(
             onClick = {
