@@ -115,6 +115,28 @@ class CashanovaViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun loginUser(onSuccess: () -> Unit) {
+        if (!validateLoginFields()) return
+
+        viewModelScope.launch {
+            isLoading = true
+
+            val user = userDao.login(username.trim(), password.trim())
+
+            if (user == null) {
+                message = "Invalid username or password"
+                isLoading = false
+                return@launch
+            }
+
+            sessionManager.saveSession(user.id, user.username)
+
+            message = "Login successful"
+            isLoading = false
+            onSuccess()
+        }
+    }
+
     fun clearAuthFields() {
         username = ""
         password = ""
