@@ -68,6 +68,20 @@ class CashanovaViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun validateLoginFields(): Boolean {
+        return when {
+            username.isBlank() -> {
+                message = "Please enter your username"
+                false
+            }
+            password.isBlank() -> {
+                message = "Please enter your password"
+                false
+            }
+            else -> true
+        }
+    }
+
     fun registerUser(onSuccess: () -> Unit) {
         if (!validateRegisterFields()) return
 
