@@ -64,7 +64,53 @@ class CashanovaViewModel(application: Application) : AndroidViewModel(applicatio
                 false
             }
             else -> true
+
         }
     }
+
+    fun registerUser(onSuccess: () -> Unit) {
+        if (!validateRegisterFields()) return
+
+        viewModelScope.launch {
+            isLoading = true
+
+            val existingUser = userDao.getUserByUsername(username)
+
+            if (existingUser != null) {
+                message = "Username already exists"
+                isLoading = false
+                return@launch
+            }
+
+            val user = User(
+                username = username.trim(),
+                password = password.trim(),
+                fullName = fullName.trim(),
+                surname = surname.trim(),
+                email = email.trim(),
+                contactNumber = contactNumber.trim(),
+                dateOfBirth = dateOfBirth.trim()
+            )
+
+            userDao.insertUser(user)
+
+            message = "Registration successful. Please log in."
+            clearAuthFields()
+            isLoading = false
+            onSuccess()
+        }
+    }
+
+    fun clearAuthFields() {
+        username = ""
+        password = ""
+        fullName = ""
+        surname = ""
+        email = ""
+        contactNumber = ""
+        dateOfBirth = ""
+    }
 }
+
+
 
